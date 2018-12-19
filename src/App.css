@@ -2,11 +2,6 @@
   display: grid;
   grid-template-columns: 400px 1fr;
   grid-template-rows: 1fr 1fr;
-  grid-gap: 16px;
-  margin: 0 auto;
-  width: 90vw;
-}
-
 .App-header {
   grid-column: span 2;
   height: 40px;

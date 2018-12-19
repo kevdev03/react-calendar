@@ -20,7 +20,19 @@ class App extends Component {
   }
 }
 
+        <Calendar />
+        <section className="App-appointments"></section>
+      </main>
+    );
+  }
+}
+
 class Calendar extends Component {
+  render() {
+    return (
+      <section className="App-calendar">
+
+      </section>
   render() {
     return (
       <section className="App-calendar">
