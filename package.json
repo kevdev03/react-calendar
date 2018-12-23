@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "datejs": "^1.0.0-rc3",
+    "moment": "^2.23.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "uniquid": "^1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
