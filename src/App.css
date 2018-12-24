@@ -67,6 +67,10 @@
   margin-bottom: 16px;
 }
 
+.App-appointments--form small {
+  color: #adadad;
+}
+
 .App-appointments--form .form-group {
   display: flex;
   flex-flow: column;
@@ -85,8 +89,13 @@
   align-items: center;
 }
 
-.App-appointments--form .form-group.submit input[type=submit] {
-  display: none;
+.App-appointments--form .side-by-side {
+  display: flex;
+  justify-content: space-around;
+}
+
+.App-appointments--form .form-group button,
+.App-appointments--form .form-group input[type=submit] {
   width: 150px;
   height: 40px;
 }

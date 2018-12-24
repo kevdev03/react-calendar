@@ -19,14 +19,14 @@ class App extends Component {
           {
             'w0r98tw0r': {
               'title': 'Halloween Party',
-              'description': 'At Office',
+              'notes': 'At Office',
               'time': '12:00 PM',
             }
           },
           {
             'e0q98r0qe9wr': {
               'title': 'Trick or Treat',
-              'description': 'School Quadrangle',
+              'notes': 'School Quadrangle',
               'time': '3:00 PM',
             }
           },
@@ -35,21 +35,21 @@ class App extends Component {
           {
             '32i4ui234': {
               'title': 'Dental Appointment',
-              'description': 'Molar Extraction',
+              'notes': 'Molar Extraction',
               'time': '9:00 AM',
             }
           },
           {
             'a98ds7fa98sf': {
               'title': 'Family Dinner',
-              'description': "At Fazoli's",
+              'notes': "At Fazoli's",
               'time': '7:30 PM',
             }
           },
           {
             'as89d7fa': {
               'title': 'Pick Up James',
-              'description': 'At School',
+              'notes': 'At School',
               'time': '4:00 PM',
             }
           },
@@ -58,7 +58,7 @@ class App extends Component {
           {
             'ad980s7fa': {
               'title': 'Office party',
-              'description': 'Bring donuts',
+              'notes': 'Bring donuts',
               'time': '3:00 PM',
             }
           },
@@ -67,7 +67,7 @@ class App extends Component {
           {
             'x9cv87bx08': {
               'title': 'End of year party',
-              'description': 'Bring pizza (3 boxes)',
+              'notes': 'Bring pizza (3 boxes)',
               'time': '5:00 PM',
             }
           },
@@ -75,12 +75,10 @@ class App extends Component {
       },
       active: {
         date: today,
-        appointments: []
+        appointments: [],
       },
       enableEdit: false,
     };
-
-    // this.setState({active: {appointments: this.state.appointments[today]}});
   }
 
   getMonthRange = (currentDate) => {
@@ -126,16 +124,54 @@ class App extends Component {
 
     state.active.date = date;
     state.active.appointments = state.appointments[date] || [];
+    state.active.selected = '';
 
-    this.setState({ active: state.active });
+    this.setState({ enableEdit: false, active: state.active });
   }
 
   handleNewAppointment = (date) => {
+    console.info('handleNewAppointment');
     this.setState({enableEdit: true});
   }
 
-  handleLoadAppointment = obj => {
-    this.setState({enableEdit: true});
+  handleLoadAppointment = uid => {
+    // console.log('obj-->', obj);
+    const state = this.state;
+    state.active.selected = uid;
+    state.enableEdit = true;
+    this.setState(state);
+  }
+
+  handleFormSubmit = form => {
+    const uid = Object.keys(form)[0];
+    const formObj = form[uid];
+    const activeDate = formObj.date;
+    const state = this.state;
+    const appointmentObj = state.appointments;
+    // appointment update
+    const selected = (state.active.hasOwnProperty('selected') && state.active.hasOwnProperty.length > 0) && this.state.active.selected;
+
+    if ((appointmentObj.hasOwnProperty(activeDate)) && (appointmentObj[activeDate].length > 0)) {
+
+      if (selected) {
+        const activeAppointments = appointmentObj[activeDate].filter(app => Object.keys(app)[0] !== selected);
+        activeAppointments.push(form);
+        appointmentObj[activeDate] = activeAppointments;        
+      } else {
+        appointmentObj[activeDate].push(form)
+      }
+    } else {
+      appointmentObj[activeDate] = [form];
+    }
+    this.setState(
+      {
+        active: {
+          appointments: appointmentObj[activeDate],
+          date: formObj.date,
+          selected: false
+        },
+        appointments: appointmentObj,
+      });
   }
 
   render() {
@@ -146,10 +182,13 @@ class App extends Component {
         <Calendar
           data={this.state}
           onTraversal={this.handleTraversal.bind(this)}
-          appointments={this.state.appointments}
           onDayClick={this.handleDayClick.bind(this)}
-          active={this.state.active} />
-        <AppointmentForm enableEdit={this.state.enableEdit} active={this.state.active}/>
+        />
+        <AppointmentForm 
+          enableEdit={this.state.enableEdit} 
+          active={this.state.active}
+          onSubmit={this.handleFormSubmit.bind(this)}
+        />
         <AppointmentsList
           date={this.state.active.date}
           appointments={this.state.active.appointments} 

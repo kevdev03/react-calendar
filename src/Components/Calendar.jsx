@@ -32,7 +32,7 @@ class Calendar extends Component {
 
     // console.info(currentMonth);
 
-    for (const date in this.props.appointments) {
+    for (const date in this.props.data.appointments) {
       // console.group('apps');
       // console.log('date-->', date);
       // console.log('currentMonth.from-->', currentMonth.from);
@@ -42,8 +42,8 @@ class Calendar extends Component {
       const appDate = moment(date);
 
       if (appDate.isBetween(currentMonth.from, currentMonth.to, null, "[]")) {
-        if (this.props.appointments.hasOwnProperty(date)) {
-          appsOfTheMonth[date] = this.props.appointments[date];
+        if (this.props.data.appointments.hasOwnProperty(date)) {
+          appsOfTheMonth[date] = this.props.data.appointments[date];
         }
       }
     }
@@ -73,7 +73,7 @@ class Calendar extends Component {
               my={my}
               appointments={appsOfTheMonth}
               onDayClick={this.handleDayClick.bind(this)}
-              active={this.props.active}
+              active={this.props.data.active}
             />
           </tbody>
         </table>
@@ -185,7 +185,7 @@ class Day extends Component {
         ${this.props.isClicked && 'clicked'}
         `}
         onClick={this.handleDayClick.bind(this)}>
-        {moment(this.props.date).format('DD')}
+        {moment(this.props.date).format('D')}
         {this.props.appontments.length > 0 && <i className="day--appointment"></i>}
       </td>
     );
