@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Calendar from './Components/Calendar';
+import {AppointmentForm, AppointmentsList} from './Components/Appointments';
 const uniqid = require('uniquid');
 const moment = require('moment');
 
@@ -75,7 +76,8 @@ class App extends Component {
       active: {
         date: today,
         appointments: []
-      }
+      },
+      enableEdit: false,
     };
 
     // this.setState({active: {appointments: this.state.appointments[today]}});
@@ -128,6 +130,14 @@ class App extends Component {
     this.setState({ active: state.active });
   }
 
+  handleNewAppointment = (date) => {
+    this.setState({enableEdit: true});
+  }
+
+  handleLoadAppointment = obj => {
+    this.setState({enableEdit: true});
+  }
+
   render() {
     return (
       <main className="App">
@@ -139,80 +149,14 @@ class App extends Component {
           appointments={this.state.appointments}
           onDayClick={this.handleDayClick.bind(this)}
           active={this.state.active} />
-        <AppointmentForm />
-        <AppointmentContainer
+        <AppointmentForm enableEdit={this.state.enableEdit} active={this.state.active}/>
+        <AppointmentsList
           date={this.state.active.date}
-          appointments={this.state.active.appointments} />
+          appointments={this.state.active.appointments} 
+          onNewAppointment={this.handleNewAppointment.bind(this)}
+          onLoadAppointment={this.handleLoadAppointment.bind(this)} 
+        />
       </main>
-    );
-  }
-}
-
-class AppointmentContainer extends Component {
-  render() {
-    return (<section className="App-appointments--list"></section>);
-  }
-}
-
-class AppointmentForm extends Component {
-  render() {
-    return (
-      <section className="App-appointments--form">
-        <form action="">
-          <fieldset>
-            <legend>Appointment Details</legend>
-            <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input type="text" name="title" ref="title" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="location">Location</label>
-              <input type="text" name="location" ref="location" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="notes">Notes</label>
-              <textarea type="text" name="notes" ref="notes"></textarea>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Date Settings</legend>
-            <div className="form-group-inline">
-              <label htmlFor="all-day">All Day</label>
-              <input type="checkbox" name="all-day" ref="all-day" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="starts-at">Starts At</label>
-              <input type="text" name="starts-at" ref="starts-at" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="ends-at">End At</label>
-              <input type="text" name="ends-at" ref="ends-at" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="repeats">Repeats</label>
-              <input type="text" name="repeats" ref="repeats" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="travel-time">Travel Time</label>
-              <input type="text" name="travel-time" ref="travel-time" />
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Notifications</legend>
-            <div className="form-group">
-              <label htmlFor="alert">Alert</label>
-              <select name="alert" ref="alert">
-              <option value="0">Select one</option>
-              <option value="1">At time of event</option>
-              <option value="2">5 minutes before</option>
-              <option value="3">10 minutes before</option>
-              <option value="4">15 minutes before</option>
-              <option value="5">30 minutes before</option>
-              </select>
-            </div>
-          </fieldset>
-        </form>
-      </section>
     );
   }
 }
